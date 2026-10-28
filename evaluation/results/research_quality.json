@@ -1,0 +1,116 @@
+[
+  {
+    "id": "RQ-01",
+    "desc": "Cold storage conflict \u2014 should say 20 days (retention:0), not 60 days (security:1)",
+    "passed": true,
+    "keyword_hit": true,
+    "forbidden_hit": false,
+    "citation_hit": true,
+    "conflict_detected": true,
+    "conflict_expected": true,
+    "answer_snippet": "Based on Data retention policy [retention:0]:\nData retention policy\n\nEffective 2026-01-15, raw run records are held in cold recovery storage for 20 days after their plan-specific searchable retention period ends, then permanently deleted. Earlier cold-storage duration is superseded.\n\n**Sources:** [r",
+    "citations": [
+      "retention:0",
+      "security:1"
+    ]
+  },
+  {
+    "id": "RQ-02",
+    "desc": "On-call stipend conflict \u2014 should say $175 (handbook), not $140 (oncall runbook)",
+    "passed": true,
+    "keyword_hit": true,
+    "forbidden_hit": false,
+    "citation_hit": true,
+    "conflict_detected": true,
+    "conflict_expected": true,
+    "answer_snippet": "Based on Employee handbook [handbook:1]:\nEmployee handbook\n\nEffective 2026-01-01 the weekly on-call stipend is $175 (replacing earlier stipend). This compensation update supersedes stipend figures in older operational runbooks. Incident severity definitions remain owned by the on-call runbook.\n\n**So",
+    "citations": [
+      "handbook:1",
+      "oncall:0"
+    ]
+  },
+  {
+    "id": "RQ-03",
+    "desc": "AQL timeout \u2014 should say 50 seconds (v2.3)",
+    "passed": true,
+    "keyword_hit": true,
+    "forbidden_hit": false,
+    "citation_hit": true,
+    "conflict_detected": true,
+    "conflict_expected": false,
+    "answer_snippet": "Based on AQL query reference [query:0]:\nAQL query reference\n\nAQL is a read-only query language. Example: RUNS WHERE status = failed SINCE 7d COUNT BY workflow_name. Queries return at most 8000 rows and time out after 50 seconds in version 2.3. Earlier versions used a 25-second timeout.\n\n**Sources:**",
+    "citations": [
+      "query:0"
+    ]
+  },
+  {
+    "id": "RQ-04",
+    "desc": "Launch plan EU projects \u2014 should say NO",
+    "passed": true,
+    "keyword_hit": true,
+    "forbidden_hit": false,
+    "citation_hit": true,
+    "conflict_detected": false,
+    "conflict_expected": false,
+    "answer_snippet": "Based on Regions and workspace setup [regions:0]:\nRegions and workspace setup\n\nAsterline has a US region in Virginia and an EU region in Dublin. US is the default. EU projects are available on Team and Enterprise starting with version 2.1. Launch workspaces can create only US projects.\n\n**Sources:**",
+    "citations": [
+      "regions:0"
+    ]
+  },
+  {
+    "id": "RQ-05",
+    "desc": "HIPAA / healthcare cert \u2014 should say not stated / no claims",
+    "passed": true,
+    "keyword_hit": true,
+    "forbidden_hit": false,
+    "citation_hit": true,
+    "conflict_detected": false,
+    "conflict_expected": false,
+    "answer_snippet": "Based on Security overview [security:2]:\nSecurity overview\n\nAnnual penetration testing is performed by Northbridge Security. Security reports should omit tokens, credentials, and customer payloads unless a secure transfer is arranged. This overview makes no claims about healthcare-specific certifica",
+    "citations": [
+      "security:2"
+    ]
+  },
+  {
+    "id": "RQ-06",
+    "desc": "Root cause of INC-2025-08",
+    "passed": true,
+    "keyword_hit": true,
+    "forbidden_hit": false,
+    "citation_hit": true,
+    "conflict_detected": false,
+    "conflict_expected": false,
+    "answer_snippet": "Based on INC-2025-08 ingestion outage [incident-08:1]:\nINC-2025-08 ingestion outage\n\nThe cause was a consumer heartbeat configuration mismatch introduced during the Queuefin rollout. Rebalances repeatedly interrupted ingestion workers. SDK clients that retried recovered; clients without retry lost a",
+    "citations": [
+      "incident-08:1"
+    ]
+  },
+  {
+    "id": "RQ-07",
+    "desc": "Mobile app \u2014 should say no 2026 mobile app planned",
+    "passed": true,
+    "keyword_hit": true,
+    "forbidden_hit": false,
+    "citation_hit": true,
+    "conflict_detected": false,
+    "conflict_expected": false,
+    "answer_snippet": "Based on Product FAQ [faq:1]:\nProduct FAQ\n\nThere is no announced timeline for an Asia-Pacific region. No mobile dashboard application is planned for 2026. Enterprise subscription prices must be obtained from sales and are not published in this knowledge base.\n\n**Sources:** [faq:1] \u2014 Product FAQ\n*(No",
+    "citations": [
+      "faq:1"
+    ]
+  },
+  {
+    "id": "RQ-08",
+    "desc": "Team ingestion rate limit",
+    "passed": true,
+    "keyword_hit": true,
+    "forbidden_hit": false,
+    "citation_hit": true,
+    "conflict_detected": true,
+    "conflict_expected": false,
+    "answer_snippet": "Based on Run ingestion API [ingest:1]:\nRun ingestion API\n\nThe per-project ingestion rate limit is 300 requests per second on Launch, 1500 on Team, and 6000 on Enterprise. A rate-limited request returns 429 and a Retry-After header. Clients should honor the header, use bounded retries, and retain sta",
+    "citations": [
+      "ingest:1"
+    ]
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "MB-01",
+    "desc": "Store and retrieve memory",
+    "passed": true,
+    "detail": "Stored: ['I am on the Enterprise plan']"
+  },
+  {
+    "id": "MB-02",
+    "desc": "Forget by topic reduces memory count",
+    "passed": true,
+    "detail": "Before: 2, After: 1"
+  },
+  {
+    "id": "MB-03",
+    "desc": "User B cannot see User A's memory",
+    "passed": true,
+    "detail": "User B memories: []"
+  },
+  {
+    "id": "MB-04",
+    "desc": "Memory persists across agent instances",
+    "passed": true,
+    "detail": "Retrieved: ['Investigating duplicate BigQuery rows']"
+  },
+  {
+    "id": "MB-05",
+    "desc": "Correction is stored with type=correction",
+    "passed": true,
+    "detail": "Memory types: ['correction', 'context']"
+  },
+  {
+    "id": "MB-06",
+    "desc": "Detect memory inspection intent",
+    "passed": true,
+    "detail": "Detected intent: {'action': 'list', 'payload': None}"
+  },
+  {
+    "id": "MB-07",
+    "desc": "Detect clear_all intent",
+    "passed": true,
+    "detail": "Detected intent: {'action': 'clear_all', 'payload': None}"
+  },
+  {
+    "id": "MB-08",
+    "desc": "Clear all leaves no active memories",
+    "passed": true,
+    "detail": "Remaining: []"
+  }
+]

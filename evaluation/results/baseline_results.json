@@ -1,0 +1,116 @@
+[
+  {
+    "id": "RQ-01",
+    "desc": "Cold storage conflict \u2014 should say 20 days (retention:0), not 60 days (security:1)",
+    "passed": false,
+    "keyword_hit": true,
+    "forbidden_hit": true,
+    "citation_hit": true,
+    "conflict_detected": true,
+    "conflict_expected": true,
+    "answer_snippet": "Based on Data retention policy [retention:0]:\nData retention policy\n\nEffective 2026-01-15, raw run records are held in cold recovery storage for 20 days after their plan-specific searchable retention period ends, then permanently deleted. This policy supersedes the earlier 60-day cold-storage period",
+    "citations": [
+      "retention:0",
+      "security:1"
+    ]
+  },
+  {
+    "id": "RQ-02",
+    "desc": "On-call stipend conflict \u2014 should say $175 (handbook), not $140 (oncall runbook)",
+    "passed": false,
+    "keyword_hit": true,
+    "forbidden_hit": true,
+    "citation_hit": true,
+    "conflict_detected": true,
+    "conflict_expected": true,
+    "answer_snippet": "Based on Employee handbook [handbook:1]:\nEmployee handbook\n\nEffective 2026-01-01 the weekly on-call stipend is $175, replacing $140. This compensation update supersedes stipend figures in older operational runbooks. Incident severity definitions remain owned by the on-call runbook.\n\n**Sources:** [ha",
+    "citations": [
+      "handbook:1",
+      "oncall:0"
+    ]
+  },
+  {
+    "id": "RQ-03",
+    "desc": "AQL timeout \u2014 should say 50 seconds (v2.3)",
+    "passed": true,
+    "keyword_hit": true,
+    "forbidden_hit": false,
+    "citation_hit": true,
+    "conflict_detected": true,
+    "conflict_expected": false,
+    "answer_snippet": "Based on AQL query reference [query:0]:\nAQL query reference\n\nAQL is a read-only query language. Example: RUNS WHERE status = failed SINCE 7d COUNT BY workflow_name. Queries return at most 8000 rows and time out after 50 seconds in version 2.3. Earlier versions used a 25-second timeout.\n\n**Sources:**",
+    "citations": [
+      "query:0"
+    ]
+  },
+  {
+    "id": "RQ-04",
+    "desc": "Launch plan EU projects \u2014 should say NO",
+    "passed": true,
+    "keyword_hit": true,
+    "forbidden_hit": false,
+    "citation_hit": true,
+    "conflict_detected": false,
+    "conflict_expected": false,
+    "answer_snippet": "Based on Plans and billing [pricing:2]:\nPlans and billing\n\nLaunch allows 6 alert rules per project, Team 75, and Enterprise 600. Warehouse Export is unavailable on Launch and included on Team and Enterprise. SAML SSO is Enterprise only. Team and Enterprise can create EU projects. Launch supports US ",
+    "citations": [
+      "pricing:2"
+    ]
+  },
+  {
+    "id": "RQ-05",
+    "desc": "HIPAA / healthcare cert \u2014 should say not stated / no claims",
+    "passed": false,
+    "keyword_hit": false,
+    "forbidden_hit": false,
+    "citation_hit": false,
+    "conflict_detected": false,
+    "conflict_expected": false,
+    "answer_snippet": "Based on Product FAQ [faq:0]:\nProduct FAQ\n\nAsterline is a workflow-monitoring service. Run Explorer displays workflow attempts and status changes; it does not capture screens or DOM content. Signals notifications can be delayed during incidents even when the underlying run records remain available.\n",
+    "citations": [
+      "faq:0"
+    ]
+  },
+  {
+    "id": "RQ-06",
+    "desc": "Root cause of INC-2025-08",
+    "passed": false,
+    "keyword_hit": false,
+    "forbidden_hit": false,
+    "citation_hit": false,
+    "conflict_detected": false,
+    "conflict_expected": false,
+    "answer_snippet": "Based on INC-2026-03 delayed alerts [incident-03:0]:\nINC-2026-03 delayed alerts\n\nINC-2026-03 occurred on 2026-03-07 from 16:05 to 16:39 UTC. Signals notifications were delayed by up to 34 minutes. No alerts were lost. The incident was classified SEV-3.\n\n**Sources:** [incident-03:0] \u2014 INC-2026-03 del",
+    "citations": [
+      "incident-03:0"
+    ]
+  },
+  {
+    "id": "RQ-07",
+    "desc": "Mobile app \u2014 should say no 2026 mobile app planned",
+    "passed": false,
+    "keyword_hit": false,
+    "forbidden_hit": false,
+    "citation_hit": false,
+    "conflict_detected": false,
+    "conflict_expected": false,
+    "answer_snippet": "Based on Product FAQ [faq:0]:\nProduct FAQ\n\nAsterline is a workflow-monitoring service. Run Explorer displays workflow attempts and status changes; it does not capture screens or DOM content. Signals notifications can be delayed during incidents even when the underlying run records remain available.\n",
+    "citations": [
+      "faq:0"
+    ]
+  },
+  {
+    "id": "RQ-08",
+    "desc": "Team ingestion rate limit",
+    "passed": true,
+    "keyword_hit": true,
+    "forbidden_hit": false,
+    "citation_hit": true,
+    "conflict_detected": true,
+    "conflict_expected": false,
+    "answer_snippet": "Based on Run ingestion API [ingest:1]:\nRun ingestion API\n\nThe per-project ingestion rate limit is 300 requests per second on Launch, 1500 on Team, and 6000 on Enterprise. A rate-limited request returns 429 and a Retry-After header. Clients should honor the header, use bounded retries, and retain sta",
+    "citations": [
+      "ingest:1"
+    ]
+  }
+]
