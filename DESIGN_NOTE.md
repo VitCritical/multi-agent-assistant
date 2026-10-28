@@ -162,7 +162,21 @@ LANGCHAIN_PROJECT=asterline-research-assistant
 LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
 ```
 
+### Representative LangSmith Execution Traces
+
+Public, accessible trace links illustrating representative multi-agent runs across successful retrieval, conflict resolution, memory handling, and edge cases:
+
+1. **[Representative Run 1 — Grounded Research & Evidence Retrieval](https://smith.langchain.com/public/f6a72339-ff07-47f4-8a65-b21a70039a07/r/01a183a2-42cd-7cdb-8fda-07fa675df247?start_time=2026-10-28T17%3A50%3A11.661671Z)**
+   * **Demonstrates:** Semantic search over local vector store (`all-MiniLM-L6-v2`), metadata extraction, and chunk citations.
+2. **[Representative Run 2 — Evidence Evaluation & Conflict Resolution](https://smith.langchain.com/public/60debfb5-74f3-498f-a11a-652328bca67a/r/01a183a2-4845-7623-8a16-a64cad5003c5?start_time=2026-10-28T17%3A50%3A13.061679Z)**
+   * **Demonstrates:** `EvidenceAgent.evaluate` checking contradictory documents, version precedence (e.g. v2.3 > v2.0), and explicit supersessions.
+3. **[Representative Run 3 — User-Scoped Memory Lifecycle](https://smith.langchain.com/public/314b3ddc-bfa6-4a01-b535-3cedce8bd5ac/r/01a183a2-6f00-783b-9f15-2f7109978c73?start_time=2026-10-28T17%3A50%3A22.976484Z)**
+   * **Demonstrates:** `MemoryAgent.load_context` and intent-based memory routing (context storage, inspection, and forgetting).
+4. **[Representative Run 4 — Difficult / End-to-End Orchestrator Pipeline](https://smith.langchain.com/public/3e7602fd-5816-4ed1-8765-a0f508f8c40e/r/01a183a3-8c0d-79d4-8b36-78529772a7f3?start_time=2026-10-28T17%3A51%3A35.949978Z)**
+   * **Demonstrates:** Complete multi-agent coordination across `load_memory` → `research_retrieve` → `evidence_evaluate` → `research_synthesize` → `store_memory` → `persist_message`.
+
 ### Trace Inspection & Reviewer Access
+- **Reviewer Access:** In the LangSmith project settings (`Settings` &rarr; `Members`), invite **`radialpulse@nxtwave.co.in`** as Viewer/Collaborator.
 - **Trace Hierarchy Visible:**
   - `Orchestrator.run` (Parent StateGraph invocation)
     - `MemoryAgent.load_context` & `MemoryAgent.detect_memory_intent`

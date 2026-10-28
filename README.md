@@ -156,6 +156,12 @@ To inspect executions and agent spans:
 2. Reviewers can be granted access by inviting **`radialpulse@nxtwave.co.in`** to your project in the LangSmith dashboard.
 3. Every agent step (`MemoryAgent.load_context`, `ResearchAgent.retrieve`, `EvidenceAgent.evaluate`, `ResearchAgent.generate_answer`, `MemoryAgent.store`) produces inspectable nested spans.
 
+### Public Representative Traces
+- **[Run 1 — Grounded Research & Evidence Retrieval](https://smith.langchain.com/public/f6a72339-ff07-47f4-8a65-b21a70039a07/r/01a183a2-42cd-7cdb-8fda-07fa675df247?start_time=2026-10-28T17%3A50%3A11.661671Z)**
+- **[Run 2 — Evidence Evaluation & Conflict Resolution](https://smith.langchain.com/public/60debfb5-74f3-498f-a11a-652328bca67a/r/01a183a2-4845-7623-8a16-a64cad5003c5?start_time=2026-10-28T17%3A50%3A13.061679Z)**
+- **[Run 3 — User-Scoped Memory Lifecycle](https://smith.langchain.com/public/314b3ddc-bfa6-4a01-b535-3cedce8bd5ac/r/01a183a2-6f00-783b-9f15-2f7109978c73?start_time=2026-10-28T17%3A50%3A22.976484Z)**
+- **[Run 4 — Difficult / End-to-End Orchestrator Pipeline](https://smith.langchain.com/public/3e7602fd-5816-4ed1-8765-a0f508f8c40e/r/01a183a3-8c0d-79d4-8b36-78529772a7f3?start_time=2026-10-28T17%3A51%3A35.949978Z)**
+
 ---
 
 ## Cost & Account Requirements
