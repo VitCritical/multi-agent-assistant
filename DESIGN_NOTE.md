@@ -12,35 +12,35 @@ The system employs three functional agents coordinated by a non-agent orchestrat
 
 ```mermaid
 flowchart TD
-    User([User / Streamlit UI]) -->|User Query + User ID| Orchestrator[Orchestrator StateGraph]
+    User(["User (Streamlit UI)"]) -->|"User Message + User ID"| Orchestrator["Orchestrator StateGraph"]
 
-    subgraph Memory Pipeline
-        Orchestrator --> NodeLoad[Node: load_memory]
-        NodeLoad -->|Check Context & Intent| MemoryAgent[Memory Agent]
-        MemoryAgent -->|Read User Scope| SQLiteDB[(SQLite DB: memory.db)]
-        NodeLoad -->|Intent = Memory Command| NodeMemCmd[Node: handle_memory_command]
-        NodeMemCmd -->|Forget / List / Clear| MemoryAgent
+    subgraph Memory_Pipeline ["Memory Pipeline"]
+        Orchestrator --> NodeLoad["Node: load_memory"]
+        NodeLoad -->|"Check Context & Intent"| MemoryAgent["Memory Agent"]
+        MemoryAgent -->|"Read User Scope"| SQLiteDB[("SQLite DB (memory.db)")]
+        NodeLoad -->|"Intent = Memory Command"| NodeMemCmd["Node: handle_memory_command"]
+        NodeMemCmd -->|"Forget, List, Clear, Store"| MemoryAgent
     end
 
-    subgraph Research Pipeline
-        NodeLoad -->|Intent = Research Query| NodeRetr[Node: research_retrieve]
-        NodeRetr -->|Semantic Search| ResearchAgent[Research Agent]
-        ResearchAgent -->|Cosine Top-K| ChromaDB[(ChromaDB: all-MiniLM-L6-v2)]
+    subgraph Research_Pipeline ["Research Pipeline"]
+        NodeLoad -->|"Intent = Research Query"| NodeRetr["Node: research_retrieve"]
+        NodeRetr -->|"Local Semantic Search"| ResearchAgent["Research Agent"]
+        ResearchAgent -->|"Top-K Cosine"| ChromaDB[("ChromaDB (all-MiniLM-L6-v2)")]
         
-        NodeRetr -->|Retrieved Chunks + Metadata| NodeEval[Node: evidence_evaluate]
-        NodeEval -->|Topic, Scope, Date, Version, Supersession| EvidenceAgent[Evidence/Conflict Agent]
+        NodeRetr -->|"Retrieved Chunks + Metadata"| NodeEval["Node: evidence_evaluate"]
+        NodeEval -->|"Topic, Scope, Date, Version, Supersession"| EvidenceAgent["Evidence / Conflict Agent"]
         
-        NodeEval -->|Ranked Chunks + Conflict Notes| NodeSynth[Node: research_synthesize]
-        NodeSynth -->|Grounded Answer + Citations| ResearchAgent
+        NodeEval -->|"Ranked Chunks + Conflict Analysis"| NodeSynth["Node: research_synthesize"]
+        NodeSynth -->|"Grounded Answer + Citations"| ResearchAgent
     end
 
-    subgraph Persistence Pipeline
-        NodeSynth --> NodeStore[Node: store_memory]
-        NodeStore -->|Detect Correction / Context / Preference| MemoryAgent
-        MemoryAgent -->|Write User Scope| SQLiteDB
-        NodeStore --> NodePersist[Node: persist_message]
+    subgraph Persistence_Pipeline ["Persistence Pipeline"]
+        NodeSynth --> NodeStore["Node: store_memory"]
+        NodeStore -->|"Extract Context / Preference / Correction"| MemoryAgent
+        MemoryAgent -->|"Write User Scope"| SQLiteDB
+        NodeStore --> NodePersist["Node: persist_message"]
         NodeMemCmd --> NodePersist
-        NodePersist -->|Save Turn History| SQLiteDB
+        NodePersist -->|"Save Conversation Turn"| SQLiteDB
         NodePersist --> User
     end
 ```

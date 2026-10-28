@@ -1,6 +1,8 @@
-# BATCH 5 — Asterline Research Assistant
+# Asterline Research Assistant (`multi-agent-assistant`)
 
 A multi-agent AI assistant that helps Asterline Labs employees find trustworthy answers in company documentation and continues useful work across conversations.
+
+Repository: [https://github.com/VitCritical/multi-agent-assistant](https://github.com/VitCritical/multi-agent-assistant)
 
 ---
 
@@ -8,7 +10,8 @@ A multi-agent AI assistant that helps Asterline Labs employees find trustworthy 
 
 ```bash
 # 1. Clone and enter the project
-cd "Mint Assignment"
+git clone https://github.com/VitCritical/multi-agent-assistant.git
+cd multi-agent-assistant
 
 # 2. Create and activate virtual environment
 python3 -m venv .venv
@@ -93,6 +96,41 @@ Results saved to `evaluation/results/`.
 ---
 
 ## Architecture
+
+```mermaid
+flowchart TD
+    User(["User (Streamlit UI)"]) -->|"User Message + User ID"| Orchestrator["Orchestrator StateGraph"]
+
+    subgraph Memory_Pipeline ["Memory Pipeline"]
+        Orchestrator --> NodeLoad["Node: load_memory"]
+        NodeLoad -->|"Check Context & Intent"| MemoryAgent["Memory Agent"]
+        MemoryAgent -->|"Read User Scope"| SQLiteDB[("SQLite DB (memory.db)")]
+        NodeLoad -->|"Intent = Memory Command"| NodeMemCmd["Node: handle_memory_command"]
+        NodeMemCmd -->|"Forget, List, Clear, Store"| MemoryAgent
+    end
+
+    subgraph Research_Pipeline ["Research Pipeline"]
+        NodeLoad -->|"Intent = Research Query"| NodeRetr["Node: research_retrieve"]
+        NodeRetr -->|"Local Semantic Search"| ResearchAgent["Research Agent"]
+        ResearchAgent -->|"Top-K Cosine"| ChromaDB[("ChromaDB (all-MiniLM-L6-v2)")]
+        
+        NodeRetr -->|"Retrieved Chunks + Metadata"| NodeEval["Node: evidence_evaluate"]
+        NodeEval -->|"Topic, Scope, Date, Version, Supersession"| EvidenceAgent["Evidence / Conflict Agent"]
+        
+        NodeEval -->|"Ranked Chunks + Conflict Analysis"| NodeSynth["Node: research_synthesize"]
+        NodeSynth -->|"Grounded Answer + Citations"| ResearchAgent
+    end
+
+    subgraph Persistence_Pipeline ["Persistence Pipeline"]
+        NodeSynth --> NodeStore["Node: store_memory"]
+        NodeStore -->|"Extract Context / Preference / Correction"| MemoryAgent
+        MemoryAgent -->|"Write User Scope"| SQLiteDB
+        NodeStore --> NodePersist["Node: persist_message"]
+        NodeMemCmd --> NodePersist
+        NodePersist -->|"Save Conversation Turn"| SQLiteDB
+        NodePersist --> User
+    end
+```
 
 Three genuine functional agents coordinated by a non-agent LangGraph orchestrator:
 
