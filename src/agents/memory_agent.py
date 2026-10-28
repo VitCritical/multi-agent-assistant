@@ -87,8 +87,29 @@ class MemoryAgent:
         # memory inspection intent
         if any(kw in msg_lower for kw in [
             "what do you remember", "what have you stored",
-            "show my memory", "what do you know about me",
+            "show my memory", "show memory", "list memories",
+            "what do you know about me", "view my memory",
         ]):
             return {"action": "list", "payload": None}
+
+        # direct memory store directive (e.g. "remember that I am on Enterprise plan")
+        direct_store_prefixes = [
+            "please remember that ", "please remember ",
+            "remember that ", "remember: ", "remember ",
+            "note that ", "keep in mind that ", "keep in mind ",
+        ]
+        for prefix in direct_store_prefixes:
+            if msg_lower.startswith(prefix):
+                content = user_message[len(prefix):].strip().rstrip(".")
+                if content:
+                    mtype = "context"
+                    c_low = content.lower()
+                    if any(w in c_low for w in ["prefer", "like", "bullet", "format", "style", "concise"]):
+                        mtype = "preference"
+                    elif any(w in c_low for w in ["actually", "wrong", "correction"]):
+                        mtype = "correction"
+                    elif any(w in c_low for w in ["investigating", "working on", "debug", "issue"]):
+                        mtype = "investigation"
+                    return {"action": "store", "payload": {"type": mtype, "content": content}}
 
         return None

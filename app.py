@@ -47,21 +47,42 @@ with st.sidebar:
     ma = MemoryAgent(selected_user_id)
     memories = ma.list_memories()
 
+    st.caption(f"Active User: **{selected_name}** • ({len(memories)} stored memories)")
+
+    # ── Direct memory management form ──────────────────────────────
+    with st.expander("➕ Add Memory Manually", expanded=False):
+        with st.form("manual_memory_form", clear_on_submit=True):
+            new_type = st.selectbox("Category", ["context", "preference", "investigation", "correction"])
+            new_content = st.text_area("Content", placeholder="e.g. My workspace is on the Enterprise plan", height=80)
+            submitted = st.form_submit_button("Save Memory", use_container_width=True)
+            if submitted and new_content.strip():
+                ma.store(new_type, new_content.strip(), source="user_stated")
+                st.success(f"Saved {new_type}!")
+                st.rerun()
+
+    # ── Display active memories ────────────────────────────────────
     if not memories:
-        st.caption("No stored context yet.")
+        st.caption("No stored context yet for this user. Tell the assistant what to remember (e.g. 'Remember that my team is on Team plan') or add a memory above.")
     else:
+        badge_map = {
+            "preference": "🟣",
+            "correction": "🔴",
+            "investigation": "🟠",
+            "context": "🔵",
+        }
         for mem in memories:
+            badge = badge_map.get(mem["type"], "⚪")
             col1, col2 = st.columns([4, 1])
             with col1:
-                st.markdown(f"**[{mem['type']}]** {mem['content']}")
-                st.caption(f"Stored: {mem['created_at'][:10]}")
+                st.markdown(f"{badge} **`{mem['type'].upper()}`**  \n{mem['content']}")
+                st.caption(f"📅 {mem['created_at'][:10]} • {mem.get('source', 'user_stated')}")
             with col2:
-                if st.button("🗑", key=f"del_{mem['id']}", help="Forget this"):
+                if st.button("🗑", key=f"del_{mem['id']}", help="Forget this item"):
                     ma.forget_by_id(mem["id"])
                     st.rerun()
 
     st.divider()
-    if st.button("🧹 Clear all memories", use_container_width=True):
+    if st.button("🧹 Clear all memories", use_container_width=True, disabled=len(memories) == 0):
         ma.clear_all()
         st.rerun()
 
@@ -99,6 +120,11 @@ for msg in current_messages:
                 for c in msg["conflicts"]:
                     st.warning(c)
 
+        # Show memory saved badge if present
+        if msg.get("memory_stored"):
+            mem_item = msg["memory_stored"]
+            st.info(f"🧠 **Memory saved:** `[{mem_item['type'].upper()}]` {mem_item['content']}")
+
 # ── Chat input ────────────────────────────────────────────────────
 if prompt := st.chat_input("Ask a question about Asterline…"):
 
@@ -120,6 +146,7 @@ if prompt := st.chat_input("Ask a question about Asterline…"):
         answer = result["answer"]
         citations = result.get("citations", [])
         conflicts = result.get("conflicts", [])
+        mem_stored = result.get("memory_stored")
 
         st.markdown(answer)
 
@@ -142,12 +169,16 @@ if prompt := st.chat_input("Ask a question about Asterline…"):
                 for c in conflicts:
                     st.warning(c)
 
+        if mem_stored:
+            st.info(f"🧠 **Memory saved:** `[{mem_stored['type'].upper()}]` {mem_stored['content']}")
+
     # Store in session history
     current_messages.append({
         "role": "assistant",
         "content": answer,
         "citations": citations,
         "conflicts": conflicts,
+        "memory_stored": mem_stored,
     })
 
     # Refresh sidebar memory panel

@@ -134,4 +134,7 @@ To inspect executions and agent spans:
 
 ## AI Use Disclosure
 
-This project was built with AI coding assistance (Antigravity/Claude). The AI helped generate boilerplate code, SQLAlchemy models, LangGraph state schema, and evaluation test scaffolding. All architectural decisions, agent responsibilities, memory model design, conflict detection logic, and evaluation criteria were designed and validated by the developer. All code was reviewed, tested, and understood before submission.
+This project was built with AI assistance from two tools:
+- **ChatGPT (OpenAI):** Used for initial architectural planning and discussion, leading to the decision to transition from treating the orchestrator as an agent to an architecture of three separate, genuine functional agents (Research, Evidence/Conflict, and Memory) coordinated by a non-agent LangGraph orchestrator.
+- **Antigravity (Google DeepMind / Gemini / Claude):** Used for local environment debugging, SQLAlchemy schema implementation, LangGraph node wiring, ChromaDB integration, and evaluation test harness scaffolding.
+- **Human Review & Validation:** All code, database models, conflict resolution rules, and evaluation results were reviewed, debugged, and validated against the original assignment specification and `corpus.jsonl`. No test outputs or model evaluations were fabricated.

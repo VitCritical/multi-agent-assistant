@@ -78,6 +78,14 @@ def node_handle_memory_command(state: AgentState) -> AgentState:
             for m in memories:
                 lines.append(f"• [{m['type']}] {m['content']}")
             state["final_answer"] = "\n".join(lines)
+    elif action == "store":
+        p = payload
+        ma.store(p["type"], p["content"], source="user_stated")
+        state["final_answer"] = (
+            f"Got it! I have remembered this for our future conversations:\n\n"
+            f"• **[{p['type'].upper()}]** {p['content']}"
+        )
+        state["memory_to_store"] = p
     else:
         state["final_answer"] = "Memory command processed."
 
@@ -125,7 +133,7 @@ def node_research_synthesize(state: AgentState) -> AgentState:
 def node_store_memory(state: AgentState) -> AgentState:
     """
     Node 3: Orchestrator decides what (if anything) to store from this turn.
-    Looks for correction / preference / investigation signals.
+    Looks for correction / preference / investigation / context signals.
     Memory ≠ KB facts — only user-asserted context is stored.
     """
     msg = state["user_message"].lower()
@@ -135,21 +143,32 @@ def node_store_memory(state: AgentState) -> AgentState:
     correction_signals = ["actually", "i meant", "that's wrong", "incorrect", "not right", "correction"]
     if any(s in msg for s in correction_signals):
         ma.store("correction", state["user_message"], source="user_stated")
+        state["memory_to_store"] = {"type": "correction", "content": state["user_message"]}
+        return state
 
     # Preference pattern: "i prefer", "i like", "always", "please always"
-    pref_signals = ["i prefer", "i like", "please always", "i want you to"]
+    pref_signals = ["i prefer", "i like", "please always", "i want you to", "format as", "always use", "always give"]
     if any(s in msg for s in pref_signals):
         ma.store("preference", state["user_message"], source="user_stated")
+        state["memory_to_store"] = {"type": "preference", "content": state["user_message"]}
+        return state
 
     # Investigation pattern: "investigating", "looking into", "i'm working on"
-    invest_signals = ["investigating", "looking into", "i'm working on", "i am working on", "debug"]
+    invest_signals = ["investigating", "looking into", "i'm working on", "i am working on", "debug", "troubleshooting"]
     if any(s in msg for s in invest_signals):
         ma.store("investigation", state["user_message"], source="user_stated")
+        state["memory_to_store"] = {"type": "investigation", "content": state["user_message"]}
+        return state
 
     # User context: plan / team / workspace statements
-    context_signals = ["my team", "we are on", "our plan", "my workspace", "i am on", "we use"]
+    context_signals = [
+        "my team", "we are on", "our plan", "my workspace", "i am on", "we use",
+        "i work on", "i work in", "my role is", "i am a ", "i am an ", "our stack",
+    ]
     if any(s in msg for s in context_signals):
         ma.store("context", state["user_message"], source="user_stated")
+        state["memory_to_store"] = {"type": "context", "content": state["user_message"]}
+        return state
 
     return state
 
@@ -263,4 +282,5 @@ class Orchestrator:
             "citations": final_state.get("citations", []),
             "conflicts": final_state.get("conflicts", []),
             "research_result": final_state.get("research_result"),
+            "memory_stored": final_state.get("memory_to_store"),
         }

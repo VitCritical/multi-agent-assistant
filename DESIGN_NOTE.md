@@ -163,7 +163,6 @@ LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
 ```
 
 ### Trace Inspection & Reviewer Access
-- **Reviewer Access:** In the LangSmith project settings (`Settings` &rarr; `Members`), invite **`radialpulse@nxtwave.co.in`** as Viewer/Collaborator.
 - **Trace Hierarchy Visible:**
   - `Orchestrator.run` (Parent StateGraph invocation)
     - `MemoryAgent.load_context` & `MemoryAgent.detect_memory_intent`
@@ -184,6 +183,17 @@ LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
 
 ## 8. AI Use Disclosure
 
-This project was built with AI pair-programming assistance (Antigravity).
-- **What AI helped produce:** Environment setup debugging (PyTorch/NumPy version alignment for macOS x86_64), boilerplate LangGraph graph definitions, and evaluation test harness scaffolding.
-- **Validation & Human Review:** Every line of code, agent division, database schema, SQLite query, and conflict resolution rule was inspected, tested locally, and validated against the original assignment specification and `corpus.jsonl`. No test outputs or model evaluations were fabricated.
+This project was developed with AI assistance from two tools:
+
+1. **ChatGPT (OpenAI):**
+   - **Role:** Used during the initial architectural planning and system design phase.
+   - **Key Contribution:** Explored multi-agent patterns and drove the pivotal architectural decision to transition away from a cosmetic pattern (where the orchestrator was considered an agent) to **three separate, genuine functional agents** (Research Agent, Evidence/Conflict Agent, Memory Agent) cleanly coordinated by a non-agent LangGraph state machine.
+
+2. **Antigravity (Google DeepMind / Gemini / Claude):**
+   - **Role:** Interactive pair-programming assistant in the IDE.
+   - **Key Contribution:** Assisted with Python virtual environment debugging (PyTorch 2.2.2 and NumPy/Transformers compatibility), ChromaDB local vector store setup, LangGraph state schema definition, SQLite schema definitions with user isolation, and evaluation test scaffolding.
+
+3. **Human Review & Validation:**
+   - Every architectural boundary, database query, conflict precedence rule (applying `faq:2` and `company:2`), and test case was reviewed, validated against `corpus.jsonl`, and executed locally.
+   - All evaluation figures reported in this document reflect real, reproducible runs. No test results, model capabilities, or benchmark scores were fabricated.
+
