@@ -8,6 +8,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# ── Page config (must be the first Streamlit command) ──────────────
+st.set_page_config(
+    page_title="Asterline Research Assistant",
+    page_icon="🔭",
+    layout="wide",
+)
+
 # ── Initialise DB and vector store on first run ────────────────────
 from src.database import init_db, get_all_users
 from src.corpus_loader import init_vector_store
@@ -23,13 +30,6 @@ startup()
 # ── Imports after startup ──────────────────────────────────────────
 from src.agents.orchestrator import Orchestrator
 from src.agents.memory_agent import MemoryAgent
-
-# ── Page config ───────────────────────────────────────────────────
-st.set_page_config(
-    page_title="Asterline Research Assistant",
-    page_icon="🔭",
-    layout="wide",
-)
 
 # ── Sidebar: user selector ─────────────────────────────────────────
 with st.sidebar:
